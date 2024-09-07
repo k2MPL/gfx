@@ -5,6 +5,9 @@
 
 #include <Scene.h>
 
+#include <interface_FileSystem.h>
+#include <interface_Logger.h>
+
 class Engine {
 private:
   static Engine gInstance;
@@ -19,6 +22,8 @@ public:
   static Engine &Instance();
 
 public:
+  Engine() = default;
+
   struct InitInfo {
     std::string initialScene;
     std::vector<std::unique_ptr<SceneFactory>> sceneFactory;
@@ -35,12 +40,20 @@ public:
   void update();
   void shutdown();
 
+  Logger &getLogger();
+  FileSystem &getFileSystem();
+
 private:
   bool switchScene(const std::string &_name);
 
 private:
+  Logger m_Logger;
+  FileSystem m_FileSystem;
+
   std::unique_ptr<Scene> m_ActiveScene;
   std::vector<std::unique_ptr<SceneFactory>> m_SceneFactory;
 };
 
 #define ENGINE Engine::Instance()
+#define LOGGER Engine::Instance().getLogger()
+#define FILE_SYSTEM Engine::Instance().getFileSystem()

@@ -3,7 +3,7 @@
 #include <Scene.h>
 #include <gfx/GFXShader.h>
 
-class SceneTriangle : public Scene {
+class SceneTexturedTriangle : public Scene {
 public:
   bool init();
 
@@ -11,11 +11,13 @@ public:
   const std::string &getName() const override;
 
 private:
-  void onUpdate(float _delta);
-  void onShutdown();
+  void onUpdate(float _delta) override;
+  void onShutdown() override;
 
+private:
   bool initShaders();
   bool initGeometry();
+  bool initTextures();
 
 private:
   GFXShaderProgram m_Program;
@@ -23,9 +25,11 @@ private:
   GLuint m_VAO{INVALID_GL_HANDLE};
   GLuint m_VBO{INVALID_GL_HANDLE};
   GLuint m_EBO{INVALID_GL_HANDLE};
+
+  GLuint m_Texture{INVALID_GL_HANDLE};
 };
 
-class SceneTriangleFactory : public SceneFactory {
+class SceneTexturedTriangleFactory : public SceneFactory {
 private:
   const std::string &getName() const override;
   std::unique_ptr<Scene> instantiate() override;

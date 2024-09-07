@@ -4,12 +4,12 @@
 
 class SceneTexturedCube : public Scene {
 public:
-  static constexpr const char *gSceneName = "Textured Cube";
+  static const std::string gSceneName;
   const std::string &getName() const override;
 };
 
 class SceneTexturedCubeFactory : public SceneFactory {
 private:
   const std::string &getName() const override;
-  std::unique_ptr<Scene> &&instantiate() override;
+  std::unique_ptr<Scene> instantiate() override;
 };

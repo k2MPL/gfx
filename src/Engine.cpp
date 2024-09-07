@@ -11,14 +11,22 @@ bool Engine::init(InitInfo &&_info) {
   return switchScene(_info.initialScene);
 }
 
-void Engine::update() {}
+void Engine::update() {
+  if (m_ActiveScene) {
+    m_ActiveScene->update(0.0f);
+  }
+}
 
 void Engine::shutdown() {}
 
+Logger &Engine::getLogger() { return m_Logger; }
+
+FileSystem &Engine::getFileSystem() { return m_FileSystem; }
+
 bool Engine::switchScene(const std::string &_name) {
-  if (m_ActiveScene && (m_ActiveScene->getName() == _name))
-    //#TODO: Log
+  if (m_ActiveScene && (m_ActiveScene->getName() == _name)) {
     return true;
+  }
 
   auto it =
       std::find_if(m_SceneFactory.begin(), m_SceneFactory.end(),

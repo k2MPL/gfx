@@ -10,7 +10,12 @@ add_definitions(-DGFX_DESKTOP)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib/glad/include)
 
 add_executable(${TARGET_NAME} 
-    main.cpp)
+    main.cpp
+    
+    desktop_Logger.h
+    desktop_Logger.cpp
+    desktop_FileSystem.h
+    desktop_FileSystem.cpp)
 
 # GLFW
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/glfw)

@@ -22,5 +22,5 @@ public:
   virtual ~SceneFactory() = default;
 
   virtual const std::string &getName() const = 0;
-  virtual std::unique_ptr<Scene> &&instantiate() = 0;
+  virtual std::unique_ptr<Scene> instantiate() = 0;
 };

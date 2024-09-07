@@ -4,6 +4,7 @@
 #include <Engine.h>
 
 #include <Scene_TexturedCube.h>
+#include <Scene_TexturedTriangle.h>
 #include <Scene_Triangle.h>
 
 static void *LoadGLFunc(const char *name) { return glfwGetProcAddress(name); }
@@ -29,13 +30,16 @@ int main() {
   gladLoadGLLoader(LoadGLFunc);
 
   Engine::InitInfo engineInitInfo;
-  engineInitInfo.initialScene = SceneTriangle::gSceneName;
+  engineInitInfo.initialScene = SceneTexturedTriangle::gSceneName;
 
   engineInitInfo.sceneFactory.push_back(
       std::unique_ptr<SceneFactory>{new SceneTriangleFactory{}});
 
   engineInitInfo.sceneFactory.push_back(
       std::unique_ptr<SceneFactory>{new SceneTexturedCubeFactory{}});
+
+  engineInitInfo.sceneFactory.push_back(
+      std::unique_ptr<SceneFactory>(new SceneTexturedTriangleFactory{}));
 
   if (!ENGINE.init(std::move(engineInitInfo))) {
     return 0;
