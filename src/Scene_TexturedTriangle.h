@@ -1,7 +1,9 @@
 #pragma once
 
 #include <Scene.h>
+
 #include <gfx/GFXShader.h>
+#include <gfx/GFXTexture2D.h>
 
 class SceneTexturedTriangle : public Scene {
 public:
@@ -22,11 +24,11 @@ private:
 private:
   GFXShaderProgram m_Program;
 
+  GFXTexture2D m_Texture;
+
   GLuint m_VAO{INVALID_GL_HANDLE};
   GLuint m_VBO{INVALID_GL_HANDLE};
   GLuint m_EBO{INVALID_GL_HANDLE};
-
-  GLuint m_Texture{INVALID_GL_HANDLE};
 };
 
 class SceneTexturedTriangleFactory : public SceneFactory {

@@ -20,12 +20,14 @@ void SceneTexturedTriangle::onUpdate(float _delta) {
   m_Program.setUniform("uTexture", 0);
 
   glActiveTexture(GL_TEXTURE0);
-  glBindTexture(GL_TEXTURE_2D, m_Texture);
+  glBindTexture(GL_TEXTURE_2D, m_Texture.getHandle());
 
   glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, nullptr);
 }
 
-void SceneTexturedTriangle::onShutdown() {}
+void SceneTexturedTriangle::onShutdown() {
+  //#TODO:
+}
 
 bool SceneTexturedTriangle::initShaders() {
   const std::string vsSrc =
@@ -150,21 +152,6 @@ bool SceneTexturedTriangle::initGeometry() {
 }
 
 bool SceneTexturedTriangle::initTextures() {
-  GLuint texture = INVALID_GL_HANDLE;
-  glGenTextures(1, &texture);
-
-  if (texture == INVALID_GL_HANDLE) {
-    LOGGER.log("Unnable to create texture object");
-
-    return false;
-  }
-
-  glBindTexture(GL_TEXTURE_2D, texture);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
   const std::vector<unsigned char> buffer =
       FILE_SYSTEM.readBinaryFromFile("textures/moss.jpg");
 
@@ -187,13 +174,22 @@ bool SceneTexturedTriangle::initTextures() {
     return false;
   }
 
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, textureData);
+  GFXTexture2D::InitInfo info;
+  info.data = textureData;
+  info.width = width;
+  info.height = height;
+  info.internalFormat = GL_RGB;
+  info.format = GL_RGB;
+  info.type = GL_UNSIGNED_BYTE;
+  info.iParams.push_back({GL_TEXTURE_WRAP_S, GL_REPEAT});
+  info.iParams.push_back({GL_TEXTURE_WRAP_T, GL_REPEAT});
+  info.iParams.push_back({GL_TEXTURE_MIN_FILTER, GL_LINEAR});
+  info.iParams.push_back({GL_TEXTURE_MAG_FILTER, GL_LINEAR});
 
+  const bool result = m_Texture.init(info);
   stbi_image_free(textureData);
-  m_Texture = texture;
 
-  return true;
+  return result;
 }
 
 // ---------- Factory ----------

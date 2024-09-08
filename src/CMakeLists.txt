@@ -26,7 +26,10 @@ add_library(${TARGET_NAME} STATIC
         gfx/GFXPipeline.cpp
         gfx/GFXShader.h
         gfx/GFXShader.cpp
+        gfx/GFXTexture2D.h
+        gfx/GFXTexture2D.cpp
         
+        ProtectedID.h
         stb_impl.cpp)
 
 target_include_directories(${TARGET_NAME} PRIVATE

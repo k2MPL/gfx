@@ -2,8 +2,13 @@
 
 #include <gfx/GFXCore.h>
 
+#include <ProtectedID.h>
+
 #include <string>
 #include <vector>
+
+class GFXShader;
+using GFXShaderID = ProtectedID<GFXShader, int, -1>;
 
 class GFXShader {
 public:
@@ -21,8 +26,9 @@ public:
   GLenum getType() const;
   GLuint getHandle() const;
 
+  const GFXShaderID &getID() const;
+
   struct Info {
-    std::string src;
     std::string name;
     std::string path;
   };
@@ -30,11 +36,16 @@ public:
   const Info &getInfo() const;
 
 private:
+  GFXShaderID m_ID;
+
   GLenum m_Type{INVALID_GL_HANDLE};
   GLuint m_Handle{INVALID_GL_HANDLE};
 
   Info m_Info;
 };
+
+class GFXShaderProgram;
+using GFXShaderProgramID = ProtectedID<GFXShaderProgram, int, -1>;
 
 class GFXShaderProgram {
 public:
@@ -46,6 +57,8 @@ public:
   void shutdown();
 
   GLuint getHandle() const;
+
+  const GFXShaderProgramID &getID() const;
 
   template <typename T> bool setUniform(const std::string &_name, T _value);
 
@@ -63,5 +76,7 @@ public:
   }
 
 private:
+  GFXShaderProgramID m_ID;
+
   GLuint m_Handle{INVALID_GL_HANDLE};
 };

@@ -2,6 +2,8 @@
 
 #include <Engine.h>
 
+static int gShaderIDIndexer = 0;
+
 bool GFXShader::init(const InitInfo &_info) {
   const GLuint handle = glCreateShader(_info.type);
 
@@ -36,6 +38,7 @@ bool GFXShader::init(const InitInfo &_info) {
 
   m_Type = _info.type;
   m_Handle = handle;
+  m_ID.value = ++gShaderIDIndexer;
 
   return true;
 }
@@ -53,7 +56,11 @@ GLenum GFXShader::getType() const { return m_Type; }
 
 GLuint GFXShader::getHandle() const { return m_Handle; }
 
+const GFXShaderID &GFXShader::getID() const { return m_ID; }
+
 // ---------- Program ----------
+
+static int gShaderProgramIDIndexer = 0;
 
 bool GFXShaderProgram::init(const InitInfo &_info) {
   const GLuint handle = glCreateProgram();
@@ -94,6 +101,7 @@ bool GFXShaderProgram::init(const InitInfo &_info) {
   }
 
   m_Handle = handle;
+  m_ID.value = ++gShaderProgramIDIndexer;
 
   return true;
 }
@@ -106,3 +114,5 @@ void GFXShaderProgram::shutdown() {
 }
 
 GLuint GFXShaderProgram::getHandle() const { return m_Handle; }
+
+const GFXShaderProgramID &GFXShaderProgram::getID() const { return m_ID; }
