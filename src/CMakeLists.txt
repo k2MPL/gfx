@@ -5,6 +5,8 @@ set(TARGET_NAME "gfx")
 project(${TARGET_NAME})
 
 add_library(${TARGET_NAME} STATIC
+        GlobalRegistry.h
+        GlobalRegistry.cpp
         Engine.h
         Engine.cpp
         Scene.h
@@ -22,17 +24,30 @@ add_library(${TARGET_NAME} STATIC
         interface_FileSystem.cpp
 
         gfx/GFXCore.h
-        gfx/GFXPipeline.h
-        gfx/GFXPipeline.cpp
         gfx/GFXShader.h
         gfx/GFXShader.cpp
         gfx/GFXTexture2D.h
         gfx/GFXTexture2D.cpp
-        
+
         ProtectedID.h
         stb_impl.cpp)
 
-target_include_directories(${TARGET_NAME} PRIVATE
+# Assimp
+
+set(BUILD_SHARED_LIBS OFF)
+set(ASSIMP_BUILD_TESTS OFF)
+set(ASSIMP_INSTALL OFF)
+set(ASSIMP_INSTALL_PDB OFF)
+set(ASSIMP_INJECT_DEBUG_POSTFIX OFF)
+
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib/assimp)
+target_link_libraries(${TARGET_NAME} assimp)
+
+target_include_directories(${TARGET_NAME} PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
+
+        # lib
         ${CMAKE_CURRENT_SOURCE_DIR}/lib/glm
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/stb)
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/stb
+        ${CMAKE_CURRENT_SOURCE_DIR}/lib/assimp/include
+        ${CMAKE_CURRENT_BINARY_DIR}/lib/assimp/include) # Generated header files are placed here. https://github.com/assimp/assimp/issues/1566

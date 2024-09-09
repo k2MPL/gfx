@@ -2,7 +2,7 @@
 #include <glad/glad.h>
 
 #include <Engine.h>
-
+#include <GlobalRegistry.h>
 #include <Scene_TexturedCube.h>
 #include <Scene_TexturedTriangle.h>
 #include <Scene_Triangle.h>
@@ -24,13 +24,15 @@ int main() {
     return 0;
   }
 
+  GlobalRegistry::setScreenSize(1024, 768);
+
   glfwMakeContextCurrent(window);
   glfwSwapInterval(1);
 
   gladLoadGLLoader(LoadGLFunc);
 
   Engine::InitInfo engineInitInfo;
-  engineInitInfo.initialScene = SceneTexturedTriangle::gSceneName;
+  engineInitInfo.initialScene = SceneTexturedCube::gSceneName;
 
   engineInitInfo.sceneFactory.push_back(
       std::unique_ptr<SceneFactory>{new SceneTriangleFactory{}});

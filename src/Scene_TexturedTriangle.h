@@ -16,7 +16,6 @@ private:
   void onUpdate(float _delta) override;
   void onShutdown() override;
 
-private:
   bool initShaders();
   bool initGeometry();
   bool initTextures();
@@ -24,11 +23,11 @@ private:
 private:
   GFXShaderProgram m_Program;
 
-  GFXTexture2D m_Texture;
-
   GLuint m_VAO{INVALID_GL_HANDLE};
   GLuint m_VBO{INVALID_GL_HANDLE};
   GLuint m_EBO{INVALID_GL_HANDLE};
+
+  GFXTexture2D m_Texture;
 };
 
 class SceneTexturedTriangleFactory : public SceneFactory {

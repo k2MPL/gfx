@@ -4,6 +4,8 @@
 
 #include <ProtectedID.h>
 
+#include <glm/matrix.hpp>
+
 #include <string>
 #include <vector>
 
@@ -60,9 +62,10 @@ public:
 
   const GFXShaderProgramID &getID() const;
 
-  template <typename T> bool setUniform(const std::string &_name, T _value);
+  template <typename T>
+  bool setUniform(const std::string &_name, const T &_value);
 
-  template <> bool setUniform(const std::string &_name, int _value) {
+  template <> bool setUniform(const std::string &_name, const int &_value) {
     const GLint location = glGetUniformLocation(m_Handle, _name.c_str());
 
     if (location == -1) {
@@ -71,7 +74,18 @@ public:
     }
 
     glUniform1i(location, _value);
+    return true;
+  }
 
+  template <> bool setUniform(const std::string &_name, const glm::mat4 &_mat) {
+    const GLint location = glGetUniformLocation(m_Handle, _name.c_str());
+
+    if (location == -1) {
+      //#TODO: Log
+      return false;
+    }
+
+    glUniformMatrix4fv(location, 1, GL_FALSE, &_mat[0][0]);
     return true;
   }
 
